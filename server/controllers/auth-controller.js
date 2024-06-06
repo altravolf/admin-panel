@@ -1,5 +1,3 @@
-const bcryptjs = require("bcryptjs");
-
 const User = require("../models/user-models");
 
 const home = async (req, res) => {
@@ -36,8 +34,13 @@ const postRegister = async (req, res) => {
 
         // await User.create({ username, email, password: hashedPassword });
 
-        await User.create({ username, email, password });
-        res.status(201).json({ message: "User created successfully" });
+        const userCreated = await User.create({ username, email, password });
+
+        res.status(201).json({
+            message: "User created successfully",
+            token: await userCreated.genenrateJwtToken(),
+            userId: userCreated._id.toString()
+        });
 
     } catch (err) {
         console.log(err);
