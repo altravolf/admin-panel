@@ -8,7 +8,8 @@ authRouter.route("/")
 
 
 authRouter.route("/register")
-    .get(authController.getRegister);
+    .get(authController.getRegister)
+    .post(authController.postRegister);
 
 
 
