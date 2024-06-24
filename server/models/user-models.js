@@ -28,7 +28,7 @@ userSchema.pre("save", async function () {
 })
 
 // ? jwt
-userSchema.methods.genenrateJwtToken = async function () {
+userSchema.methods.genenrateJwtToken = async function (next) {
     try {
         if (!this._id || !process.env.JWT_SECRET_KEY) {
             throw new Error("Missing _id or JWT_SECRET_KEY");
@@ -40,8 +40,7 @@ userSchema.methods.genenrateJwtToken = async function () {
 
         return token;
     } catch (error) {
-        console.error(error);
-        throw error;
+        next(error);
     }
 }
 

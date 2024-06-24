@@ -1,27 +1,23 @@
 const User = require("../models/user-models");
 const bcryptjs = require("bcryptjs");
 
-const home = async (req, res) => {
+const home = async (req, res, next) => {
     try {
         res.send("Hello World");
     } catch (err) {
-        console.log(err);
-        res.status(500).json({ message: "Internal server error" });
+        next(err);
     }
 }
 
-
-
-const getRegister = async (req, res) => {
+const getRegister = async (req, res, next) => {
     try {
         res.send("Hello World to register again");
     } catch (err) {
-        console.log(err);
-        res.status(500).json({ message: "Internal server error" });
+        next(err);
     }
 }
 
-const postRegister = async (req, res) => {
+const postRegister = async (req, res, next) => {
     try {
         const { username, email, password } = req.body;
 
@@ -32,9 +28,7 @@ const postRegister = async (req, res) => {
             return res.status(400).json({ message: "User already exists" });
         }
 
-
         // Password is hasing and salting at user-models.js
-
         const userCreated = await User.create({ username, email, password });
 
         res.status(201).json({
@@ -44,8 +38,7 @@ const postRegister = async (req, res) => {
         });
 
     } catch (err) {
-        console.log(err);
-        res.status(500).json({ message: "Internal server error" });
+        next(err);
     }
 }
 
@@ -54,7 +47,7 @@ const postRegister = async (req, res) => {
 // *** Login ***
 // **************
 
-const postLogin = async (req, res) => {
+const postLogin = async (req, res, next) => {
     try {
         const { email, password } = req.body;
         const user = await User.findOne({ email });
@@ -76,8 +69,7 @@ const postLogin = async (req, res) => {
         });
 
     } catch (err) {
-        console.log(err);
-        res.status(500).json({ message: "Internal server error" });
+        next(err);
     }
 }
 
